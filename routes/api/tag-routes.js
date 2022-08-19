@@ -11,11 +11,16 @@ router.get('/', async (req, res) => {
     const tagData = await Tag.findAll({
       include: [{ model: Product }],
     });
+    if (!tagData) {
+      res.status(404).json({ message: "Tag Not Found" })
+      return;
+    }
     //-- response a successful--//
     res.status(200).json(tagData);
   } catch (err) {
     //-- catches and returns error--//
     res.status(500).json(err);
+    console.log(err)
   }
 });
 
@@ -66,7 +71,7 @@ router.put('/:id', async (req, res) => {
       return;
     }
     //--returns successful--//
-    res.status(200).json(updateTag);
+    res.status(200).json({ updateTag });
   } catch (err) {
     //-- returns a error --//
     res.status(500).json(err);
